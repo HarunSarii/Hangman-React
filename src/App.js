@@ -12,12 +12,8 @@ const words = ['application', 'programming', 'interface', 'wizard'];
 
 let selectedWord = words[Math.floor(Math.random() * words.length)];
 
-let playable = true;
 
-const correctLetters = [];
-const wrongLetters = [];
-
-function App({ letter }) {
+function App() {
   const [playable, setPlayable] = useState(true);
   const [correctLetters, setCorrectLetters] = useState([])
   const [wrongLetters, setWrongLetters] = useState([])
@@ -31,17 +27,19 @@ function App({ letter }) {
         const letter = key.toLowerCase();
 
         if (selectedWord.includes(letter)) {
-          setCorrectLetters(currentLetters => [...currentLetters, letter]);
-        } else {
-          show(setShowNotification)
-        }
+          if (!correctLetters.includes(letter)) {
+            setCorrectLetters(currentLetters => [...currentLetters, letter]);
 
-      } else {
-        if (!wrongLetters.includes(letter)) {
-          setWrongLetters(wrongLetters => [...wrongLetters, letter])
-        } else {
-          show(setShowNotification)
+          } else {
+            show(setShowNotification)
+          }
 
+        } else {
+          if (!wrongLetters.includes(letter)) {
+            setWrongLetters(wrongLetters => [...wrongLetters, letter])
+          } else {
+            show(setShowNotification)
+          }
         }
       }
     }
@@ -51,6 +49,14 @@ function App({ letter }) {
 
   }, [correctLetters, wrongLetters, playable])
 
+  function playAgain() {
+    setPlayable(true);
+    setCorrectLetters([])
+    setWrongLetters([])
+
+    const random = Math.floor(Math.random() * words.length)
+    selectedWord = words[random]
+  }
 
   return (
     <div className="App">
@@ -61,8 +67,8 @@ function App({ letter }) {
         <Word selectedWord={selectedWord} correctLetters={correctLetters} />
 
       </div>
-      <Popup correctLetters={correctLetters} wrongLetters={wrongLetters} selectedWord={selectedWord} setPlayable={setPlayable} />
-      <Notification />
+      <Popup correctLetters={correctLetters} wrongLetters={wrongLetters} selectedWord={selectedWord} setPlayable={setPlayable} playAgain={playAgain} />
+      <Notification showNotification={showNotification} />
     </div>
   );
 }

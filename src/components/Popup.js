@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { checkWin } from '../helpers/helper'
 
-const Popup = ({ correctLetters, wrongLetters, selectedWord, setPlayable }) => {
+const Popup = ({ correctLetters, wrongLetters, selectedWord, setPlayable, playAgain }) => {
     let finalMessage = '';
     let finalMessageRevealWord = '';
     let playable = true;
@@ -22,7 +22,7 @@ const Popup = ({ correctLetters, wrongLetters, selectedWord, setPlayable }) => {
             <div className="popup">
                 <h2>{finalMessage}</h2>
                 <h3>{finalMessageRevealWord}</h3>
-                <button id="play-button">Play Again</button>
+                <button onClick={playAgain} id="play-button">Play Again</button>
             </div>
         </div>
     )
