@@ -6,6 +6,7 @@ import WrongLetters from './components/WrongLetters';
 import Word from './components/Word';
 import Popup from './components/Popup';
 import Notification from './components/Notification';
+import { showNotification as show } from './helpers/helper'
 
 const words = ['application', 'programming', 'interface', 'wizard'];
 
@@ -13,13 +14,15 @@ let selectedWord = words[Math.floor(Math.random() * words.length)];
 
 let playable = true;
 
-// const correctLetters = [];
-// const wrongLetters = [];
+const correctLetters = [];
+const wrongLetters = [];
 
 function App({ letter }) {
   const [playable, setPlayable] = useState(true);
   const [correctLetters, setCorrectLetters] = useState([])
   const [wrongLetters, setWrongLetters] = useState([])
+  const [showNotification, setShowNotification] = useState(false)
+
 
   useEffect(() => {
     const handleKeyDown = event => {
@@ -30,14 +33,14 @@ function App({ letter }) {
         if (selectedWord.includes(letter)) {
           setCorrectLetters(currentLetters => [...currentLetters, letter]);
         } else {
-          //showNotification()
+          show(setShowNotification)
         }
 
       } else {
         if (!wrongLetters.includes(letter)) {
           setWrongLetters(wrongLetters => [...wrongLetters, letter])
         } else {
-          // showNotification()
+          show(setShowNotification)
 
         }
       }
@@ -53,12 +56,13 @@ function App({ letter }) {
     <div className="App">
       <Header />
       <div className="game-container">
-        <Figure />
+        <Figure wrongLetters={wrongLetters} />
         <WrongLetters wrongLetters={wrongLetters} />
         <Word selectedWord={selectedWord} correctLetters={correctLetters} />
-        <Popup />
-        <Notification />
+
       </div>
+      <Popup correctLetters={correctLetters} wrongLetters={wrongLetters} selectedWord={selectedWord} setPlayable={setPlayable} />
+      <Notification />
     </div>
   );
 }

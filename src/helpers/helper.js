@@ -1,6 +1,7 @@
 export function showNotification(setter) {
-    setter(tue);
+    setter(true);
     setTimeout(() => {
         setter(false)
     }, 2000);
 }
+
